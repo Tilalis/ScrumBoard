@@ -1,0 +1,8 @@
+<ul class="list-group">
+  <li *ngFor="let project of projects"
+      class="list-group-item"
+      [class.selected]="project === selectedProject"
+      (click)="onSelect(project)" >
+    {{project.name}}
+  </li>
+</ul>
