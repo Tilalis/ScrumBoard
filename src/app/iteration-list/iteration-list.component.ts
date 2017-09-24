@@ -14,55 +14,47 @@ import { Iteration }  from '../iteration';
 })
 export class IterationListComponent implements OnInit {
   @Input() title: string = 'Iteration';
-  @Input() project: Project;
   @Output() change: EventEmitter<Iteration> = new EventEmitter<Iteration>();
 
-  allIterations: Iteration[];
+  allIterations: Iteration[] = [];
   iterations: Iteration[];
   selectedIteration: Iteration;
-  project_id: number = 0;
+  project_id: number
 
   constructor(
     private dataService: DataService,
     private selectedService: SelectedService,
     private router: Router
-  ) { }
+  ) {
+    this.selectedService.getProjectObservable().subscribe(
+      project => {
+        this.project_id = project.id;
+      }
+    )
+  }
 
   ngOnInit() {
-    if (this.project !== undefined) {
-      this.project_id = this.project.id;
-      console.log(this.project_id);
-    }
-    this.dataService.getIterations().then(iterations => {
-      this.allIterations = iterations;
-      this.iterations = iterations.filter(item => item.project_id === this.project_id);
-      this.selectedIteration = this.iterations[0];
-      this.selectedService.iteration = this.selectedIteration;
+    this.dataService.getIterations().then(
+      iterations => {
+        this.allIterations = iterations;
+        this.project_id = this.selectedService.project.id;
+        this.selectIteration(this.project_id);
+        this.router.navigate(['board']);
     });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    let project = changes.project.currentValue;
-    if (project !== undefined) {
-      this.project_id = project.id;
-      this.iterations = this.allIterations.filter(
-        item => item.project_id === this.project.id
-      );
-      this.selectedIteration = this.iterations[0];
-      this.selectedService.iteration = this.selectedIteration;
-      if (this.selectedIteration !== undefined) {
-        this.change.emit(this.selectedIteration);
-        this.router.navigate(["/board", btoa(this.selectedIteration.name)]);
-      }
-    }
-
-  }
-
-  onChange(event) {
-    event.stopPropagation();
-    console.log(this.selectedIteration);
+  onChange() {
     this.selectedService.iteration = this.selectedIteration;
-    this.change.emit(this.selectedIteration);
-    this.router.navigate(["/board", btoa(this.selectedService.iteration.name)]);
+    this.router.navigate(['board']);
   }
+
+  selectIteration(project_id: number) {
+    if (this.allIterations) {
+      this.selectedIteration = this.allIterations.find(
+        element => element.project_id == project_id
+      );
+      this.selectedService.iteration = this.selectedIteration;
+    }
+  }
+
 }

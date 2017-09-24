@@ -15,11 +15,11 @@
 <div class="container-fluid h-100">
   <div class="row">
     <div class="sidebar bg-light"> <!-- col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar -->
-      <project-list (change)="onProjectChange($event)" #projectlist></project-list>
-      <iteration-list (change)="onIterationChange($event)" [project]="projectlist.selectedProject"></iteration-list>
+      <project-list></project-list>
+      <iteration-list></iteration-list>
       <ul class="nav nav-pills flex-column">
         <li class="nav-item">
-          <a [routerLink]="['board', base64_iteration_name]" routerLinkActive='active' class="nav-link">
+          <a routerLink="board" routerLinkActive='active' class="nav-link">
             Board
           </a>
         </li>
@@ -29,7 +29,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a [routerLink]="['iteration', project_id]" routerLinkActive='active' class="nav-link">
+          <a routerLink="iteration" routerLinkActive='active' class="nav-link">
             Iterations
           </a>
         </li>

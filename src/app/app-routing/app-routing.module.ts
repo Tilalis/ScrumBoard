@@ -9,8 +9,8 @@ import { IterationManagerComponent } from '../iteration-manager/iteration-manage
 
 const routes: Routes = [
   { path: '', component: StubComponent },
-  { path: 'iteration/:project_id', component: IterationManagerComponent },
-  { path: 'board/:base64_name', component: BoardComponent },
+  { path: 'iteration', component: IterationManagerComponent },
+  { path: 'board', component: BoardComponent },
   { path: 'projects', component: ProjectManagerComponent }
 ];
 

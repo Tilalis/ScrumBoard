@@ -13,7 +13,6 @@ import { Project }  from '../project';
 })
 export class ProjectListComponent implements OnInit {
   @Input() title: string = 'Project';
-  @Output() change: EventEmitter<Project> = new EventEmitter<Project>();
 
   projects: Project[];
   selectedProject: Project;
@@ -32,12 +31,9 @@ export class ProjectListComponent implements OnInit {
     });
   }
 
-  onChange(event) {
-    event.stopPropagation();
+  onChange() {
     this.selectedService.project = this.selectedProject;
-    console.log(this.selectedProject);
-    this.change.emit(this.selectedService.project);
-    this.router.navigate(["/"]);
+    this.router.navigate(["/iteration"]);
   }
 
 }

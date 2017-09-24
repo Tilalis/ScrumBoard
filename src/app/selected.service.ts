@@ -1,17 +1,31 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
 
 import { Project } from './project';
 import { Iteration } from './iteration';
 
 @Injectable()
 export class SelectedService {
+  private projectSubject: Subject<Project> = new Subject<Project>();
+  private iterationSubject: Subject<Iteration> = new Subject<Iteration>();
+
   selectedProject: Project;
   selectedIteration: Iteration;
 
   constructor() { }
 
+  getProjectObservable(): Observable<Project> {
+    return this.projectSubject.asObservable();
+  }
+
+  getIterationObservable(): Observable<Iteration> {
+    return this.iterationSubject.asObservable();
+  }
+
   set project(project: Project) {
     this.selectedProject = project;
+    this.projectSubject.next(this.selectedProject);
   }
 
   get project() : Project {
@@ -20,6 +34,7 @@ export class SelectedService {
 
   set iteration(iteration: Iteration) {
     this.selectedIteration = iteration;
+    this.iterationSubject.next(this.selectedIteration);
   }
 
   get iteration() : Iteration {

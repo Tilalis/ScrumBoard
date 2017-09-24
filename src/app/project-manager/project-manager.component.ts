@@ -14,7 +14,9 @@ export class ProjectManagerComponent implements OnInit {
   selectedProject: Project;
   projects: Project[] = [];
 
-  constructor(private dataService: DataService) { }
+  constructor(
+    private dataService: DataService,
+  ) {}
 
   ngOnInit() {
     this.dataService.getProjects().then(projects => this.projects = projects);

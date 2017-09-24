@@ -1,5 +1,5 @@
 <span class="btn">{{title}}</span>
-<select (change)="onChange($event)" [(ngModel)]="selectedProject"  class="custom-select">
+<select (change)="onChange()" [(ngModel)]="selectedProject"  class="custom-select">
   <option *ngFor="let project of projects" [ngValue]="project">
     {{project.name}}
   </option>

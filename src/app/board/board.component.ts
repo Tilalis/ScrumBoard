@@ -24,13 +24,14 @@ export class BoardComponent implements OnInit {
     private selectedService: SelectedService,
     private route: ActivatedRoute,
     private dragulaService: DragulaService
-  ) { }
+  ) {
+    this.selectedService.getIterationObservable().subscribe(
+      iteration => this.iteration = iteration
+    );
+  }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.iteration_name = btoa(params['base64_name']);
-      this.iteration = this.selectedService.iteration;
-    });
+    this.iteration = this.selectedService.iteration;
 
     this.dragulaService.drop.subscribe((value) => {
       this.onDrop(value);
