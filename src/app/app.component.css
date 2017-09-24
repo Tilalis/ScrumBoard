@@ -1,7 +1,6 @@
-.container-fluid {
-  padding-top: 3.5rem;
+hr {
+  margin-bottom: 0;
 }
-
 .sidebar {
   position: fixed;
   top: 51px;
@@ -10,6 +9,25 @@
   z-index: 1000;
   padding: 20px;
   overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  overflow-y: auto;
+  height: 100%;
   border-right: 1px solid #eee;
+  width: 16%;
+}
+
+.main {
+  position: fixed;
+  top: 51px;
+  bottom: 0;
+  left: 16.666%;
+  z-index: 1000;
+  padding: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 95%;
+  width: 84%;
+}
+
+.nav {
+  padding-top: 10px;
 }

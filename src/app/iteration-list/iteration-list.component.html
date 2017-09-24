@@ -1,0 +1,6 @@
+<span class="btn">{{title}}</span>
+<select (change)="onChange($event)" [(ngModel)]="selectedIteration"  class="custom-select">
+  <option *ngFor="let iteration of allIterations | selectedProjectIteration: project_id" [ngValue]="iteration">
+    {{iteration.name}}
+  </option>
+</select>

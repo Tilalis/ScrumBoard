@@ -1,0 +1,39 @@
+<div class="container fill">
+  <div class="header row">
+      <div class="col">
+       TODO
+      </div>
+      <div class="col">
+       DOING
+      </div>
+      <div class="col">
+        DONE
+      </div>
+  </div>
+  <div class="row fill cardholders">
+      <div id="todo" class="col" [dragula]="'card-bag'">
+        <board-card *ngFor="let todo of iteration?.todo; let i = index"
+                    [name]="todo.name"
+                    [storyPoints]="todo.storyPoints"
+                    id="{{i}}">
+          {{todo.description}}
+        </board-card>
+      </div>
+      <div id="doing" class="col" [dragula]="'card-bag'">
+        <board-card *ngFor="let doing of iteration?.doing; let i = index"
+                    [name]="doing.name"
+                    [storyPoints]="doing.storyPoints"
+                    id="{{i}}">
+          {{doing.description}}
+        </board-card>
+      </div>
+      <div id="done" class="col" [dragula]="'card-bag'">
+        <board-card *ngFor="let done of iteration?.done; let i = index"
+                    [name]="done.name"
+                    [storyPoints]="done.storyPoints"
+                    id="{{i}}">
+          {{done.description}}
+        </board-card>
+      </div>
+  </div>
+</div>

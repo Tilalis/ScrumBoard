@@ -1,0 +1,20 @@
+<div class="card">
+  <div class="card-header">
+    {{title}}
+  </div>
+  <ul class="list-group list-group-flush">
+    <li *ngFor="let iteration of iterations | selectedProjectIteration: project_id"
+        class="list-group-item"
+        [class.selected]="iteration === selectedIteration"
+        (click)="onSelect(iteration)" >
+      {{iteration.name}}
+    </li>
+  </ul>
+  <button *ngIf="selectedIteration"
+          class="btn btn-danger"
+          (click)="delete()">
+    Delete
+  </button>
+</div>
+<br>
+<iteration-add [iterations]="iterations" title="Add Iteration"></iteration-add>

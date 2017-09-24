@@ -1,15 +1,67 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-  <a class="navbar-brand" href="#">{{title}}</a>
+  <div class="navbar-collapse collapse dual-collapse">
+    <div class="btn-group mr-auto" role="group" aria-label="Basic example">
+      <button class="btn btn-secondary" (click)="onBack()">Back</button>
+    </div>
+  </div>
+  <a routerLink='/' class="navbar-brand d-flex mx-auto">{{title}}</a>
+  <div class="navbar-collapse collapse dual-collapse">
+    <div class="btn-group ml-auto" role="group" aria-label="Basic example">
+      <button class="btn btn-info" (click)="modal.show()">+</button>
+    </div>
+  </div>
+
 </nav>
-<div class="container-fluid">
+<div class="container-fluid h-100">
   <div class="row">
-    <div class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
-      <h5>Projects</h5>
-      <project-list></project-list>
+    <div class="sidebar bg-light"> <!-- col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar -->
+      <project-list (change)="onProjectChange($event)" #projectlist></project-list>
+      <iteration-list (change)="onIterationChange($event)" [project]="projectlist.selectedProject"></iteration-list>
+      <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+          <a [routerLink]="['board', base64_iteration_name]" routerLinkActive='active' class="nav-link">
+            Board
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink='backlog' routerLinkActive='active' class="nav-link">
+            Backlog
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['iteration', project_id]" routerLinkActive='active' class="nav-link">
+            Iterations
+          </a>
+        </li>
+      </ul>
+      <hr>
+      <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+          <a routerLink='projects' routerLinkActive='active' class="nav-link">
+            Manage Projects
+          </a>
+        </li>
+      </ul>
+      <hr>
+      <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+          <a href="logout" class="nav-link">
+            Logout
+          </a>
+        </li>
+      </ul>
     </div>
 
-    <div class="col-sm-9 ml-sm-auto col-md-10 pt-3">
-      <project-manager title="Project List"></project-manager>
+    <div class="main"> <!-- col-sm-9 col-md-10 ml-sm-auto pt-3 main -->
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>
+<modal #modal>
+  <div class="app-modal-header">
+    <h5 class="modal-title">Add Card</h5>
+    </div>
+    <div class="app-modal-body">
+      <iteration-item-add (add)="modal.hide()"></iteration-item-add>
+    </div>
+</modal>

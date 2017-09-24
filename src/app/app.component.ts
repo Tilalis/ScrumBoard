@@ -1,4 +1,10 @@
 import { Component } from '@angular/core';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
+
+import { SelectedService } from './selected.service';
+import { Iteration } from './iteration';
+import { Project} from './project';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +12,23 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'ScrumBoard';
+  title : string = 'ScrumBoard';
+  project_id: number = 0;
+  base64_iteration_name: string = '';
+
+  constructor(public router: Router, private location: Location, private selectedService: SelectedService) {}
+
+  onBack() {
+    this.location.back();
+  }
+
+  onProjectChange(project: Project) {
+    this.project_id = project.id;
+  }
+
+  onIterationChange(iteration: Iteration) {
+    if (iteration !== undefined) {
+      this.base64_iteration_name = btoa(iteration.name);
+    }
+  }
 }

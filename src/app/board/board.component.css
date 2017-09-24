@@ -1,0 +1,29 @@
+.header {
+  margin-bottom: 1%;
+  height: 4%;
+}
+
+.fill {
+    min-height: 95%;
+    height: 95%;
+}
+
+.col {
+  margin-right: 10px;
+  padding-top: 5px;
+  overflow-y: auto;
+}
+
+.header .col {
+  text-align: center;
+  border-bottom: 1px dashed #ccc;
+}
+
+.cardholders .col {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.noborder {
+  border: none;
+}

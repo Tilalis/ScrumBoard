@@ -1,0 +1,16 @@
+<div class="card">
+  <div class="card-header">
+    {{name}}
+  </div>
+  <div class="card-body">
+    <p *ngIf="text" class="card-text">
+      {{text}}
+    </p>
+    <p *ngIf="!text" class="card-text">
+      <ng-content></ng-content>
+    </p>
+  </div>
+  <div class="card-footer text-muted">
+    {{storyPoints}}
+  </div>
+</div>

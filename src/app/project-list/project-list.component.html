@@ -1,8 +1,6 @@
-<ul class="list-group">
-  <li *ngFor="let project of projects"
-      class="list-group-item"
-      [class.selected]="project === selectedProject"
-      (click)="onSelect(project)" >
+<span class="btn">{{title}}</span>
+<select (change)="onChange($event)" [(ngModel)]="selectedProject"  class="custom-select">
+  <option *ngFor="let project of projects" [ngValue]="project">
     {{project.name}}
-  </li>
-</ul>
+  </option>
+</select>

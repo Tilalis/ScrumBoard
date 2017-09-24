@@ -26,7 +26,6 @@ export class ProjectManagerComponent implements OnInit {
 
   delete() {
     this.dataService.deleteProject(this.selectedProject);
-    this.projects = this.projects.filter(p => p !== this.selectedProject);
     this.selectedProject = undefined;
   }
 
