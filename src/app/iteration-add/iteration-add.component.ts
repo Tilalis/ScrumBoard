@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { DataService } from '../data.service';
 import { Iteration } from '../iteration'
@@ -9,6 +9,7 @@ import { Iteration } from '../iteration'
   styleUrls: ['./iteration-add.component.css']
 })
 export class IterationAddComponent implements OnInit {
+  @Output() add: EventEmitter<any> = new EventEmitter();
   @Input() title: string = "Add";
   @Input() iterations: Iteration[] = [];
 
@@ -24,6 +25,7 @@ export class IterationAddComponent implements OnInit {
       let iteration: Iteration = new Iteration(0, iterationName);
       this.dataService.addIteration(iteration);
       this.iterationName = "";
+      this.add.emit(null);
     }
   }
 }

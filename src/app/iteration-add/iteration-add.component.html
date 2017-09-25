@@ -1,9 +1,4 @@
-<div class="card">
-  <div class="card-header">
-    {{title}}
-  </div>
-  <div class="card-body">
-    <input [(ngModel)]="iterationName" type="text" class="form-control" placeholder="Iteration Name">
-  </div>
-  <button (click)="addIteration(iterationName)" type="submit" class="btn btn-primary">Submit</button>
+<div class="form-group">
+  <input [(ngModel)]="iterationName" type="text" class="form-control" placeholder="Iteration Name">
 </div>
+<button (click)="addIteration(iterationName)" type="submit" class="btn btn-primary">Add</button>

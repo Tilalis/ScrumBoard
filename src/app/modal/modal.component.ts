@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'modal',
@@ -6,10 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./modal.component.css']
 })
 export class ModalComponent implements OnInit {
+  @Input() route: string = "";
   public visible = false;
   private visibleAnimate = false;
 
-  constructor(){}
+  constructor () {
+  }
 
   public show(): void {
     this.visible = true;

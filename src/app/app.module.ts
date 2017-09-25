@@ -21,6 +21,7 @@ import { ModalComponent } from './modal/modal.component';
 import { IterationListComponent } from './iteration-list/iteration-list.component';
 import { IterationItemAddComponent } from './iteration-item-add/iteration-item-add.component';
 import { BacklogComponent } from './backlog/backlog.component';
+import { ModalGroupComponent } from './modal-group/modal-group.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { BacklogComponent } from './backlog/backlog.component';
     ModalComponent,
     IterationListComponent,
     IterationItemAddComponent,
-    BacklogComponent
+    BacklogComponent,
+    ModalGroupComponent
   ],
   imports: [
     BrowserModule,

@@ -13,24 +13,21 @@
   <div class="row fill cardholders">
       <div id="todo" class="col" [dragula]="'card-bag'">
         <board-card *ngFor="let todo of iteration?.todo; let i = index"
-                    [name]="todo.name"
-                    [storyPoints]="todo.storyPoints"
+                    [iterationItem]="todo"
                     id="{{i}}">
           {{todo.description}}
         </board-card>
       </div>
       <div id="doing" class="col" [dragula]="'card-bag'">
         <board-card *ngFor="let doing of iteration?.doing; let i = index"
-                    [name]="doing.name"
-                    [storyPoints]="doing.storyPoints"
+                    [iterationItem]="doing"
                     id="{{i}}">
           {{doing.description}}
         </board-card>
       </div>
       <div id="done" class="col" [dragula]="'card-bag'">
         <board-card *ngFor="let done of iteration?.done; let i = index"
-                    [name]="done.name"
-                    [storyPoints]="done.storyPoints"
+                    [iterationItem]="done"
                     id="{{i}}">
           {{done.description}}
         </board-card>

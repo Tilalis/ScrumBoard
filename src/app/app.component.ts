@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { SelectedService } from './selected.service';
 import { Iteration } from './iteration';
 import { Project} from './project';
+
+import { ModalComponent } from './modal/modal.component';
 
 @Component({
   selector: 'app-root',
@@ -30,5 +32,8 @@ export class AppComponent {
     if (iteration !== undefined) {
       this.base64_iteration_name = btoa(iteration.name);
     }
+  }
+
+  showModal() : void {
   }
 }

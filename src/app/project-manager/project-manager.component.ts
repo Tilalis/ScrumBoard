@@ -9,7 +9,7 @@ import { Project }  from '../project';
   styleUrls: ['./project-manager.component.css']
 })
 export class ProjectManagerComponent implements OnInit {
-  @Input() title : string = "List";
+  @Input() title : string = "Project List";
 
   selectedProject: Project;
   projects: Project[] = [];

@@ -13,7 +13,7 @@ import { Iteration }  from '../iteration';
   styleUrls: ['./iteration-manager.component.css']
 })
 export class IterationManagerComponent implements OnInit {
-  @Input() title : string = "List";
+  @Input() title : string = "Iteration List";
 
   selectedIteration: Iteration;
   allIterations: Iteration[] = [];
@@ -26,7 +26,9 @@ export class IterationManagerComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.selectedService.getProjectObservable().subscribe(
-      project => this.project_id = project.id
+      project => {
+        this.project_id = project.id;
+      }
     )
   }
 
@@ -42,6 +44,7 @@ export class IterationManagerComponent implements OnInit {
 
   onSelect(iteration: Iteration) {
     this.selectedIteration = iteration;
+    console.log(this.project_id);
   }
 
   delete() {

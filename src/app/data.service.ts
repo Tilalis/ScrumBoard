@@ -30,12 +30,14 @@ export class DataService {
   }
 
   addProject(project: Project) : void {
+    project.id = this.projects.length + 1;
     this.projects.push(project);
     this.save();
   }
 
   deleteProject(project: Project) : Project[] {
     this.projects.splice(this.projects.indexOf(project), 1);
+    this.iterations = this.iterations.filter(item => item.project_id != project.id)
     this.save();
     return this.projects;
   }
@@ -75,16 +77,19 @@ export class DataService {
     let doing: number = iteration.doing.indexOf(iterationItem);
     let done: number = iteration.done.indexOf(iterationItem);
 
-    if (todo) {
+    if (todo !== -1) {
       iteration.todo.splice(todo, 1);
+      return;
     }
 
-    if (doing) {
+    if (doing !== -1) {
       iteration.doing.splice(doing, 1);
+      return;
     }
 
-    if (done) {
+    if (done !== -1) {
       iteration.done.splice(done, 1);
+      return;
     }
 
     this.save();

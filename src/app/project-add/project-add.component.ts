@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { DataService } from '../data.service';
 import { Project } from '../project'
@@ -9,6 +9,7 @@ import { Project } from '../project'
   styleUrls: ['./project-add.component.css']
 })
 export class ProjectAddComponent implements OnInit {
+  @Output() add: EventEmitter<any> = new EventEmitter();
   @Input() title: string = "Add";
   @Input() projects: Project[] = [];
 
@@ -26,5 +27,6 @@ export class ProjectAddComponent implements OnInit {
       //this.projects.push(project)
       this.projectName = "";
     }
+    this.add.emit(null);
   }
 }

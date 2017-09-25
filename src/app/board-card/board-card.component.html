@@ -1,16 +1,19 @@
 <div class="card">
   <div class="card-header">
-    {{name}}
+    <span class="pull-left">{{iterationItem.name}}</span>
+    <button id="delete" type="button" class="close" aria-label="Close">
+      <span aria-hidden="true" (click)="delete()">&#10006;</span>
+    </button>
+    <button id="to-backlog" type="button" class="close" aria-label="Close">
+      <span aria-hidden="true" (click)="toBacklog()">&#9850;</span>
+    </button>
   </div>
   <div class="card-body">
-    <p *ngIf="text" class="card-text">
-      {{text}}
-    </p>
-    <p *ngIf="!text" class="card-text">
-      <ng-content></ng-content>
+    <p class="card-text">
+      {{iterationItem.description}}
     </p>
   </div>
   <div class="card-footer text-muted">
-    {{storyPoints}}
+    {{iterationItem.storyPoints}}
   </div>
 </div>

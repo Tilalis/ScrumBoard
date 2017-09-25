@@ -7,11 +7,11 @@
   <a routerLink='/' class="navbar-brand d-flex mx-auto">{{title}}</a>
   <div class="navbar-collapse collapse dual-collapse">
     <div class="btn-group ml-auto" role="group" aria-label="Basic example">
-      <button class="btn btn-info" (click)="modal.show()">+</button>
+      <button class="btn btn-info" (click)="modals.showByRoute()">Add</button>
     </div>
   </div>
-
 </nav>
+
 <div class="container-fluid h-100">
   <div class="row">
     <div class="sidebar bg-light"> <!-- col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar -->
@@ -19,27 +19,19 @@
       <iteration-list></iteration-list>
       <ul class="nav nav-pills flex-column">
         <li class="nav-item">
-          <a routerLink="board" routerLinkActive='active' class="nav-link">
-            Board
-          </a>
+          <a routerLink="board" routerLinkActive='active' class="nav-link">Board</a>
         </li>
         <li class="nav-item">
-          <a routerLink='backlog' routerLinkActive='active' class="nav-link">
-            Backlog
-          </a>
+          <a routerLink='backlog' routerLinkActive='active' class="nav-link">Backlog</a>
         </li>
         <li class="nav-item">
-          <a routerLink="iteration" routerLinkActive='active' class="nav-link">
-            Iterations
-          </a>
+          <a routerLink="iteration" routerLinkActive='active' class="nav-link">Iterations</a>
         </li>
       </ul>
       <hr>
       <ul class="nav nav-pills flex-column">
         <li class="nav-item">
-          <a routerLink='projects' routerLinkActive='active' class="nav-link">
-            Manage Projects
-          </a>
+          <a routerLink='projects' routerLinkActive='active' class="nav-link">Manage Projects</a>
         </li>
       </ul>
       <hr>
@@ -57,11 +49,37 @@
     </div>
   </div>
 </div>
-<modal #modal>
-  <div class="app-modal-header">
-    <h5 class="modal-title">Add Card</h5>
-    </div>
-    <div class="app-modal-body">
-      <iteration-item-add (add)="modal.hide()"></iteration-item-add>
-    </div>
-</modal>
+<modal-group #modals>
+  <modal #addProject route='projects'>
+    <div class="app-modal-header">
+      <h5 class="modal-title">Add Project</h5>
+      </div>
+      <div class="app-modal-body">
+        <project-add (add)="addProject.hide()"></project-add>
+      </div>
+  </modal>
+  <modal #addIteration route='iteration'>
+    <div class="app-modal-header">
+      <h5 class="modal-title">Add Iteration</h5>
+      </div>
+      <div class="app-modal-body">
+        <iteration-add (add)="addIteration.hide()"></iteration-add>
+      </div>
+  </modal>
+  <modal #addCard route="board">
+    <div class="app-modal-header">
+      <h5 class="modal-title">Add Card</h5>
+      </div>
+      <div class="app-modal-body">
+        <iteration-item-add (add)="addCard.hide()"></iteration-item-add>
+      </div>
+  </modal>
+  <modal #editCard route="board">
+    <div class="app-modal-header">
+      <h5 class="modal-title">Edit Card</h5>
+      </div>
+      <div class="app-modal-body">
+        <iteration-item-add (add)="editCard.hide()"></iteration-item-add>
+      </div>
+  </modal>
+</modal-group>

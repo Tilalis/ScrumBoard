@@ -45,9 +45,6 @@ export class BoardComponent implements OnInit {
 
     this.dataService.deleteIterationItemFrom(iterationItem, prev.id);
     this.dataService.addIterationItemTo(iterationItem, next.id);
-
-    console.log(iterationItem);
-    console.log(next.id);
   }
 
 }

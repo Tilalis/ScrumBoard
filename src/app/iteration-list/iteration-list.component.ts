@@ -28,7 +28,7 @@ export class IterationListComponent implements OnInit {
   ) {
     this.selectedService.getProjectObservable().subscribe(
       project => {
-        this.project_id = project.id;
+        this.project_id = project ? project.id : 0
       }
     )
   }
@@ -37,7 +37,8 @@ export class IterationListComponent implements OnInit {
     this.dataService.getIterations().then(
       iterations => {
         this.allIterations = iterations;
-        this.project_id = this.selectedService.project.id;
+        let project: Project =  this.selectedService.project;
+        this.project_id = project? project.id : 0;
         this.selectIteration(this.project_id);
         this.router.navigate(['board']);
     });
