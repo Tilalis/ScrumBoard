@@ -18,7 +18,15 @@ export class ModalGroupComponent implements OnInit {
 
   showByRoute() {
     let url   : string         = this.router.url.slice(1);
-    let modal : ModalComponent = this.modals.find(modal => modal.route == url);
+    let modal : ModalComponent = this.modals.find(
+      modal => {
+        if (typeof modal.route === "string") {
+          return modal.route == url;
+        } else {
+          return modal.route.indexOf(url) !== -1;
+        }
+    });
+
     modal.show();
   }
 }

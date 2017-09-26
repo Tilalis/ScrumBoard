@@ -7,6 +7,10 @@
   color: red;
 }
 
+#edit {
+  margin-right: 5px;
+}
+
 .card {
     margin-top: 10px;
 }

@@ -36,8 +36,18 @@ export class DataService {
   }
 
   deleteProject(project: Project) : Project[] {
+    if (this.selectedService.project === project) {
+      this.selectedService.project = undefined;
+    }
+
     this.projects.splice(this.projects.indexOf(project), 1);
-    this.iterations = this.iterations.filter(item => item.project_id != project.id)
+    console.log(this.iterations);
+
+    let filtered: Iteration[] = this.iterations.filter(item => item.project_id != project.id);
+    this.iterations.splice(0, this.iterations.length);
+    this.iterations.push(...filtered);
+    
+    console.log(this.iterations);
     this.save();
     return this.projects;
   }
@@ -54,6 +64,9 @@ export class DataService {
   }
 
   deleteIteration(iteration: Iteration): Iteration[] {
+    if (this.selectedService.iteration === iteration) {
+      this.selectedService.iteration = undefined;
+    }
     this.iterations.splice(this.iterations.indexOf(iteration), 1);
     this.save();
     return this.iterations;
@@ -68,6 +81,12 @@ export class DataService {
   addIterationItemTo(iterationItem: IterationItem, to: string) {
     let iteration: Iteration = this.selectedService.iteration;
     iteration[to].push(iterationItem);
+    this.save();
+  }
+
+  addIterationItemToBacklog(iterationItem: IterationItem) {
+    let project: Project = this.selectedService.project;
+    project.backlog.push(iterationItem);
     this.save();
   }
 
@@ -99,6 +118,16 @@ export class DataService {
     let iteration: Iteration = this.selectedService.iteration;
     iteration[_from].splice(iteration[_from].indexOf(iterationItem), 1);
     this.save();
+  }
+
+  deleteIterationItemFromBacklog(iterationItem: IterationItem) {
+    let project: Project = this.selectedService.project;
+    project.backlog.splice(project.backlog.indexOf(iterationItem), 1);
+    this.save();
+  }
+
+  isIterationItemBacklog(iterationItem: IterationItem): boolean {
+    return this.selectedService.project.backlog.indexOf(iterationItem) !== -1;
   }
 
   private save() : void {

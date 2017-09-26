@@ -5,7 +5,10 @@
       <span aria-hidden="true" (click)="delete()">&#10006;</span>
     </button>
     <button id="to-backlog" type="button" class="close" aria-label="Close">
-      <span aria-hidden="true" (click)="toBacklog()">&#9850;</span>
+      <span aria-hidden="true" (click)="toggleBacklog()">&#9850;</span>
+    </button>
+    <button id="edit" type="button" class="close" aria-label="Close">
+      <span aria-hidden="true" (click)="edit()">&#9999;</span>
     </button>
   </div>
   <div class="card-body">

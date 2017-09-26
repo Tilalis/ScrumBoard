@@ -22,9 +22,8 @@ export class ProjectAddComponent implements OnInit {
 
   addProject(projectName: string): void {
     if (projectName !== "") {
-      let project : Project = new Project(this.projects.length, projectName);
+      let project : Project = new Project(this.projects.length, projectName, null);
       this.dataService.addProject(project);
-      //this.projects.push(project)
       this.projectName = "";
     }
     this.add.emit(null);

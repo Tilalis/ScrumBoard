@@ -1,3 +1,16 @@
-<p>
-  backlog works!
-</p>
+<div class="container fill">
+  <div class="header row">
+      <div class="col">
+       Backlog
+      </div>
+  </div>
+  <div class="row fill cardholders">
+      <div id="todo" class="col" [dragula]="'card-bag'">
+        <board-card *ngFor="let item of backlog; let i = index"
+                    [iterationItem]="item"
+                    id="{{i}}">
+          {{item.description}}
+        </board-card>
+      </div>
+  </div>
+</div>

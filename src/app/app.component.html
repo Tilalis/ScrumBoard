@@ -66,7 +66,7 @@
         <iteration-add (add)="addIteration.hide()"></iteration-add>
       </div>
   </modal>
-  <modal #addCard route="board">
+  <modal #addCard [route]="['board', 'backlog']">
     <div class="app-modal-header">
       <h5 class="modal-title">Add Card</h5>
       </div>

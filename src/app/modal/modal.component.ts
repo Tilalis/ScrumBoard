@@ -6,7 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./modal.component.css']
 })
 export class ModalComponent implements OnInit {
-  @Input() route: string = "";
+  @Input() route: string | string[] = "";
   public visible = false;
   private visibleAnimate = false;
 

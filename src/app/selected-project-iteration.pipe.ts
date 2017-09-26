@@ -12,10 +12,10 @@ export class SelectedProjectIterationPipe implements PipeTransform {
   constructor(private selectedService: SelectedService) {}
 
   transform(value: Iteration[], project_id: number): Iteration[] {
-    if (value === undefined) {
+    if (value === undefined || project_id < 0 || project_id === undefined) {
       return [];
     }
-    
+
     let result: Iteration[] = value.filter(
       iteration => iteration.project_id === project_id
     )

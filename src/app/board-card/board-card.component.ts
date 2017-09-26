@@ -19,5 +19,17 @@ export class BoardCardComponent implements OnInit {
 
   delete() {
     this.dataService.deleteIterationItem(this.iterationItem);
+    this.dataService.deleteIterationItemFromBacklog(this.iterationItem);
+  }
+
+  toggleBacklog() {
+    if (this.dataService.isIterationItemBacklog(this.iterationItem)) {
+      this.dataService.addIterationItem(this.iterationItem);
+      this.dataService.deleteIterationItemFromBacklog(this.iterationItem);
+    } else {
+      this.dataService.addIterationItemToBacklog(this.iterationItem);
+      this.dataService.deleteIterationItem(this.iterationItem);
+    }
+
   }
 }

@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { DataService } from '../data.service';
 import { SelectedService } from '../selected.service';
+import { DataService } from '../data.service';
+
 
 import { Project }  from '../project';
 import { Iteration }  from '../iteration';
@@ -21,20 +22,20 @@ export class IterationManagerComponent implements OnInit {
   project_id: number;
 
   constructor(
-    private dataService: DataService,
     private selectedService: SelectedService,
+    private dataService: DataService,
     private route: ActivatedRoute
   ) {
     this.selectedService.getProjectObservable().subscribe(
       project => {
-        this.project_id = project.id;
+        this.project_id = project? project.id: -1;
       }
     )
   }
 
   ngOnInit() {
     let project: Project = this.selectedService.project;
-    this.project_id = project.id;
+    this.project_id = project? project.id : -1;
     this.dataService.getIterations().then(
       iterations => {
         this.allIterations = iterations;

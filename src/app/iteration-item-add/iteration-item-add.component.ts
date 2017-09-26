@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter} from '@angular/core';
+import { Router } from '@angular/router';
 
 import { DataService } from '../data.service';
 import { SelectedService } from '../selected.service';
@@ -18,7 +19,8 @@ export class IterationItemAddComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    private selectedService: SelectedService
+    private selectedService: SelectedService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -26,9 +28,12 @@ export class IterationItemAddComponent implements OnInit {
 
   addClick() {
     let iterationItem: IterationItem = new IterationItem(this.name, this.description, this.storyPoints);
-    this.dataService.addIterationItem(
-      new IterationItem(this.name, this.description, this.storyPoints)
-    );
+    let route: string = this.router.url.slice(1);
+    if (route === 'board') {
+      this.dataService.addIterationItem(iterationItem);
+    } else {
+      this.dataService.addIterationItemToBacklog(iterationItem);
+    }
     this.name = "";
     this.description = "";
     this.storyPoints = 0;
