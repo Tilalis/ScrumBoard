@@ -9,19 +9,13 @@ import { IterationItem } from './iteration-item';
 @Injectable()
 export class DataService {
   projects: Project[] = [];
-  iterations: Iteration[] = [];
 
   private lsNameProjects: string = '_ng_ds_projects';
-  private lsNameIterations: string = '_ng_ds_iterations';
 
   constructor(private selectedService: SelectedService) {
     let localProjects = localStorage.getItem(this.lsNameProjects);
     if (localProjects !== null) {
       this.projects = JSON.parse(localProjects) as Project[];
-    }
-    let localIterations = localStorage.getItem(this.lsNameIterations);
-    if (localIterations !== null) {
-      this.iterations = JSON.parse(localIterations) as Iteration[];
     }
   }
 
@@ -41,35 +35,24 @@ export class DataService {
     }
 
     this.projects.splice(this.projects.indexOf(project), 1);
-    console.log(this.iterations);
-
-    let filtered: Iteration[] = this.iterations.filter(item => item.project_id != project.id);
-    this.iterations.splice(0, this.iterations.length);
-    this.iterations.push(...filtered);
-    
-    console.log(this.iterations);
     this.save();
     return this.projects;
   }
 
-  getIterations() : Promise<Iteration[]> {
-    return Promise.resolve(this.iterations);
-  }
-
   addIteration(iteration: Iteration) {
     let project: Project = this.selectedService.project;
-    iteration.project_id = project.id;
-    this.iterations.push(iteration);
+    if (project !== undefined) {
+      project.iterations.push(iteration);
+    }
     this.save();
   }
 
-  deleteIteration(iteration: Iteration): Iteration[] {
+  deleteIteration(iteration: Iteration) {
     if (this.selectedService.iteration === iteration) {
       this.selectedService.iteration = undefined;
     }
-    this.iterations.splice(this.iterations.indexOf(iteration), 1);
+    this.selectedService.project.iterations.splice(this.selectedService.project.iterations.indexOf(iteration), 1);
     this.save();
-    return this.iterations;
   }
 
   addIterationItem(iterationItem: IterationItem) {
@@ -132,6 +115,5 @@ export class DataService {
 
   private save() : void {
     localStorage.setItem(this.lsNameProjects, JSON.stringify(this.projects));
-    localStorage.setItem(this.lsNameIterations, JSON.stringify(this.iterations));
   }
 }

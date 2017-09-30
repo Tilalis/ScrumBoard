@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 
 import { DataService } from '../data.service';
@@ -22,7 +22,7 @@ export class BoardComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private selectedService: SelectedService,
-    private route: ActivatedRoute,
+    private router: Router,
     private dragulaService: DragulaService
   ) {
     this.selectedService.getIterationObservable().subscribe(
@@ -32,6 +32,11 @@ export class BoardComponent implements OnInit {
 
   ngOnInit() {
     this.iteration = this.selectedService.iteration;
+
+    if (this.iteration === undefined) {
+      alert('You must choose iteration first!');
+      this.router.navigate(['iteration']);
+    }
 
     this.dragulaService.drop.subscribe((value) => {
       this.onDrop(value);

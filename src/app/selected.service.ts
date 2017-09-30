@@ -23,6 +23,10 @@ export class SelectedService {
     return this.iterationSubject.asObservable();
   }
 
+  send(): void {
+    this.projectSubject.next(this.selectedProject);
+  }
+
   set project(project: Project) {
     this.selectedProject = project;
     this.projectSubject.next(this.selectedProject);

@@ -16,10 +16,8 @@ export class IterationListComponent implements OnInit {
   @Input() title: string = 'Iteration';
   @Output() change: EventEmitter<Iteration> = new EventEmitter<Iteration>();
 
-  allIterations: Iteration[] = [];
   iterations: Iteration[];
   selectedIteration: Iteration;
-  project_id: number
 
   constructor(
     private dataService: DataService,
@@ -28,35 +26,20 @@ export class IterationListComponent implements OnInit {
   ) {
     this.selectedService.getProjectObservable().subscribe(
       project => {
-        this.project_id = project ? project.id : -1
+        this.iterations = project? project.iterations : [];
       }
     )
   }
 
   ngOnInit() {
-    this.dataService.getIterations().then(
-      iterations => {
-        this.allIterations = iterations;
-        let project: Project =  this.selectedService.project;
-        this.project_id = project? project.id : 0;
-        this.selectIteration(this.project_id);
-        this.router.navigate(['board']);
-    });
+    this.selectedIteration = undefined;
+    this.selectedService.iteration = undefined;
   }
 
   onChange() {
     this.selectedService.iteration = this.selectedIteration;
-    console.log(this.allIterations);
+    console.log(this.iterations);
     this.router.navigate(['board']);
-  }
-
-  selectIteration(project_id: number) {
-    if (this.allIterations) {
-      this.selectedIteration = this.allIterations.find(
-        element => element.project_id == project_id
-      );
-      this.selectedService.iteration = this.selectedIteration;
-    }
   }
 
 }

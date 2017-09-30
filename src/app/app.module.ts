@@ -16,7 +16,6 @@ import { IterationAddComponent } from './iteration-add/iteration-add.component';
 
 import { DragulaModule } from 'ng2-dragula/ng2-dragula';
 import { AppRoutingModule } from './app-routing/app-routing.module';
-import { SelectedProjectIterationPipe } from './selected-project-iteration.pipe';
 import { ModalComponent } from './modal/modal.component';
 import { IterationListComponent } from './iteration-list/iteration-list.component';
 import { IterationItemAddComponent } from './iteration-item-add/iteration-item-add.component';
@@ -34,7 +33,6 @@ import { ModalGroupComponent } from './modal-group/modal-group.component';
     BoardCardComponent,
     IterationManagerComponent,
     IterationAddComponent,
-    SelectedProjectIterationPipe,
     ModalComponent,
     IterationListComponent,
     IterationItemAddComponent,

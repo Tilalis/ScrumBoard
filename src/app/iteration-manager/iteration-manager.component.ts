@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { SelectedService } from '../selected.service';
 import { DataService } from '../data.service';
@@ -17,39 +17,39 @@ export class IterationManagerComponent implements OnInit {
   @Input() title : string = "Iteration List";
 
   selectedIteration: Iteration;
-  allIterations: Iteration[] = [];
   iterations: Iteration[] = [];
-  project_id: number;
 
   constructor(
     private selectedService: SelectedService,
     private dataService: DataService,
-    private route: ActivatedRoute
+    private router: Router
   ) {
     this.selectedService.getProjectObservable().subscribe(
       project => {
-        this.project_id = project? project.id: -1;
+        this.iterations = project.iterations;
       }
     )
   }
 
   ngOnInit() {
     let project: Project = this.selectedService.project;
-    this.project_id = project? project.id : -1;
-    this.dataService.getIterations().then(
-      iterations => {
-        this.allIterations = iterations;
-      }
-    );
+
+    if (project !== undefined) {
+      this.iterations = project.iterations;
+    } else {
+      alert('You must select Project first!');
+      this.router.navigate(['projects']);
+    }
+
+
   }
 
   onSelect(iteration: Iteration) {
     this.selectedIteration = iteration;
-    console.log(this.project_id);
   }
 
   delete() {
-    this.iterations = this.dataService.deleteIteration(this.selectedIteration);
+    this.dataService.deleteIteration(this.selectedIteration);
     this.selectedIteration = undefined;
   }
 

@@ -3,7 +3,7 @@
     {{title}}
   </div>
   <ul class="list-group list-group-flush">
-    <li *ngFor="let iteration of allIterations | selectedProjectIteration: project_id"
+    <li *ngFor="let iteration of iterations"
         class="list-group-item"
         [class.selected]="iteration === selectedIteration"
         (click)="onSelect(iteration)" >

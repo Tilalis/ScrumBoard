@@ -22,7 +22,7 @@ export class IterationAddComponent implements OnInit {
 
   addIteration(iterationName: string): void {
     if (iterationName !== "") {
-      let iteration: Iteration = new Iteration(0, iterationName);
+      let iteration: Iteration = new Iteration(iterationName);
       this.dataService.addIteration(iteration);
       this.iterationName = "";
       this.add.emit(null);
