@@ -13,31 +13,34 @@ import { IterationItem } from '../iteration-item';
 })
 export class IterationItemAddComponent implements OnInit {
   @Output() add: EventEmitter<any> = new EventEmitter();
-  name: string;
-  description: string;
-  storyPoints: number;
+  iterationItem: IterationItem;
 
   constructor(
     private dataService: DataService,
     private selectedService: SelectedService,
     private router: Router
-  ) { }
+  ) {
+    this.iterationItem = new IterationItem("", "", 0);
+  }
 
   ngOnInit() {
   }
 
-  addClick() {
-    let iterationItem: IterationItem = new IterationItem(this.name, this.description, this.storyPoints);
+  saveClick() {
     let route: string = this.router.url.slice(1);
     if (route === 'board') {
-      this.dataService.addIterationItem(iterationItem);
+      this.dataService.deleteIterationItem(this.iterationItem);
+      this.dataService.addIterationItem(this.iterationItem);
     } else {
-      this.dataService.addIterationItemToBacklog(iterationItem);
+      this.dataService.deleteIterationItemFromBacklog(this.iterationItem);
+      this.dataService.addIterationItemToBacklog(this.iterationItem);
     }
-    this.name = "";
-    this.description = "";
-    this.storyPoints = 0;
+    this.iterationItem = new IterationItem("", "", 0);
     this.add.emit(null);
+  }
+
+  setIterationItem(iterationItem: IterationItem) {
+    this.iterationItem = iterationItem;
   }
 
 }

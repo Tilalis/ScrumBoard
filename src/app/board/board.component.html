@@ -14,23 +14,37 @@
       <div id="todo" class="col" [dragula]="'card-bag'">
         <board-card *ngFor="let todo of iteration?.todo; let i = index"
                     [iterationItem]="todo"
-                    id="{{i}}">
+                    id="{{i}}"
+                    [editModal] = "editModal"
+                    [itemAdd] = "itemAdd">
           {{todo.description}}
         </board-card>
       </div>
       <div id="doing" class="col" [dragula]="'card-bag'">
         <board-card *ngFor="let doing of iteration?.doing; let i = index"
                     [iterationItem]="doing"
-                    id="{{i}}">
+                    id="{{i}}"
+                    [editModal] = "editModal"
+                    [itemAdd] = "itemAdd">
           {{doing.description}}
         </board-card>
       </div>
       <div id="done" class="col" [dragula]="'card-bag'">
         <board-card *ngFor="let done of iteration?.done; let i = index"
                     [iterationItem]="done"
-                    id="{{i}}">
+                    id="{{i}}"
+                    [editModal] = "editModal"
+                    [itemAdd] = "itemAdd">
           {{done.description}}
         </board-card>
       </div>
   </div>
 </div>
+<modal #editModal route="board">
+  <div class="app-modal-header">
+    <h5 class="modal-title">Edit Card</h5>
+    </div>
+    <div class="app-modal-body">
+      <iteration-item-add #itemAdd (add)="editModal.hide()"></iteration-item-add>
+    </div>
+</modal>

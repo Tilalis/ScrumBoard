@@ -1,13 +1,13 @@
 <div class="form-group">
   <label for="-name" class="form-control-label">Name:</label>
-  <input type="text" class="form-control" [(ngModel)]="name" >
+  <input type="text" class="form-control" [(ngModel)]="iterationItem.name" >
 </div>
 <div class="form-group">
   <label for="description" class="form-control-label">Description:</label>
-  <textarea class="form-control" [(ngModel)]="description" ></textarea>
+  <textarea class="form-control" [(ngModel)]="iterationItem.description" ></textarea>
 </div>
 <div class="form-group">
   <label for="storyPoints" class="form-control-label">Story Points:</label>
-  <input type="number" class="form-control" [(ngModel)]="storyPoints" >
+  <input type="number" class="form-control" [(ngModel)]="iterationItem.storyPoints" >
 </div>
-<button class="btn btn-success" (click)="addClick()">Add</button>
+<button class="btn btn-success" (click)="saveClick()">Save</button>
