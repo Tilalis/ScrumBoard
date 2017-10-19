@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule }      from '@angular/core';
 import { FormsModule }   from '@angular/forms';
+import { HttpModule }    from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { ProjectManagerComponent } from './project-manager/project-manager.component';
@@ -43,7 +44,8 @@ import { ModalGroupComponent } from './modal-group/modal-group.component';
     BrowserModule,
     FormsModule,
     DragulaModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpModule
   ],
   providers: [
     DataService,

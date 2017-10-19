@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Headers, Http } from '@angular/http';
+
+import 'rxjs/add/operator/toPromise';
 
 import { SelectedService } from './selected.service';
 
@@ -11,8 +14,12 @@ export class DataService {
   projects: Project[] = [];
 
   private lsNameProjects: string = '_ng_ds_projects';
+  private url: string = "http://localhost:1337/api/projects";
 
-  constructor(private selectedService: SelectedService) {
+  constructor(
+    private selectedService: SelectedService,
+    private http: Http
+  ) {
     let localProjects = localStorage.getItem(this.lsNameProjects);
     if (localProjects !== null) {
       this.projects = JSON.parse(localProjects) as Project[];
@@ -20,13 +27,33 @@ export class DataService {
   }
 
   getProjects() : Promise<Project[]> {
-    return Promise.resolve(this.projects);
+    let self = this;
+    return this
+            .http
+            .get(this.url)
+            .toPromise()
+            .then(resp => {
+              self.projects.splice(0, self.projects.length);
+              let projects = resp.json() as Project[];
+              self.projects.push(...projects);
+              return self.projects;
+            });
   }
 
   addProject(project: Project) : void {
-    project.id = this.projects.length + 1;
-    this.projects.push(project);
-    this.save();
+    this.http.post(this.url, project)
+    .toPromise()
+    .then(raw => {
+      let res = raw.json();
+            console.log(res);
+      if (res.status == "OK") {
+        project._id = res.project._id;
+        this.projects.push(project);
+      }
+    })
+    .catch(res => {
+      alert("Error adding Project!");
+    });
   }
 
   deleteProject(project: Project) : Project[] {
@@ -34,43 +61,79 @@ export class DataService {
       this.selectedService.project = undefined;
     }
 
-    this.projects.splice(this.projects.indexOf(project), 1);
-    this.save();
+    let self = this;
+    this.http.delete(this.url + "/" + project._id)
+    .toPromise()
+    .then(raw => {
+      let res = raw.json();
+      console.log(res);
+      if (res.status == "OK") {
+        self.projects.splice(self.projects.indexOf(project), 1);
+      }
+    })
+
     return this.projects;
+  }
+
+  updateProject(project: Project) {
+    console.log("CALLED updateProject");
+    this.http.put(this.url + "/" + project._id, project)
+    .toPromise()
+    .then((raw) => {
+      let res = raw.json();
+      console.log(res);
+      if (res.status == "OK") {
+        project._id = res.project._id;
+      }
+    })
+    .catch((raw) => {
+      alert("Error adding Iteration!");
+    })
   }
 
   addIteration(iteration: Iteration) {
     let project: Project = this.selectedService.project;
     if (project !== undefined) {
       project.iterations.push(iteration);
+      this.updateProject(project);
     }
-    this.save();
   }
 
   deleteIteration(iteration: Iteration) {
     if (this.selectedService.iteration === iteration) {
       this.selectedService.iteration = undefined;
     }
-    this.selectedService.project.iterations.splice(this.selectedService.project.iterations.indexOf(iteration), 1);
-    this.save();
+    let project: Project = this.selectedService.project;
+    if (project !== undefined) {
+      project.iterations.splice(project.iterations.indexOf(iteration), 1);
+      this.updateProject(project);
+    }
   }
 
   addIterationItem(iterationItem: IterationItem) {
     let iteration: Iteration = this.selectedService.iteration;
     iteration.todo.push(iterationItem);
-    this.save();
+    let project: Project = this.selectedService.project;
+    if (project !== undefined) {
+      this.updateProject(project);
+    }
   }
 
   addIterationItemTo(iterationItem: IterationItem, to: string) {
     let iteration: Iteration = this.selectedService.iteration;
     iteration[to].push(iterationItem);
-    this.save();
+    let project: Project = this.selectedService.project;
+    if (project !== undefined) {
+      this.updateProject(project);
+    }
   }
 
   addIterationItemToBacklog(iterationItem: IterationItem) {
     let project: Project = this.selectedService.project;
-    project.backlog.push(iterationItem);
-    this.save();
+    if (project !== undefined) {
+      project.backlog.push(iterationItem);
+      this.updateProject(project);
+    }
   }
 
   deleteIterationItem(iterationItem: IterationItem) {
@@ -94,19 +157,27 @@ export class DataService {
       return;
     }
 
-    this.save();
+    let project: Project = this.selectedService.project;
+    if (project !== undefined) {
+      this.updateProject(project);
+    }
   }
 
   deleteIterationItemFrom(iterationItem: IterationItem, _from: string) {
     let iteration: Iteration = this.selectedService.iteration;
     iteration[_from].splice(iteration[_from].indexOf(iterationItem), 1);
-    this.save();
+    let project: Project = this.selectedService.project;
+    if (project !== undefined) {
+      this.updateProject(project);
+    }
   }
 
   deleteIterationItemFromBacklog(iterationItem: IterationItem) {
     let project: Project = this.selectedService.project;
-    project.backlog.splice(project.backlog.indexOf(iterationItem), 1);
-    this.save();
+    if (project !== undefined) {
+      project.backlog.splice(project.backlog.indexOf(iterationItem), 1);
+      this.updateProject(project);
+    }
   }
 
   isIterationItemBacklog(iterationItem: IterationItem): boolean {

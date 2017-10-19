@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 
-const logger = require('./logger');
+const logging = require('./logging');
+const logger  = new logging.Logger("mongoose");
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://root:scrumboardroot@ds111754.mlab.com:11754/scrumboard', {
   useMongoClient: true
 })
 .then(function (db) {
-  logger.log("MONGOOSE", "localhost", "Connected!");
+  logger.log("MONGOOSE", "localhost", "Connected.");
 })
 .catch(function (db) {
   logger.error("MONGOOSE", "localhost", "Connection error.")
@@ -16,16 +17,32 @@ mongoose.connect('mongodb://root:scrumboardroot@ds111754.mlab.com:11754/scrumboa
 var Schema = mongoose.Schema;
 
 var IterationItemSchema = new Schema({
-  name: String,
-  description: String,
-  storyPoints: Number
+  name: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String,
+    default: ""
+  },
+  storyPoints: {
+    type: Number,
+    default: 0
+  },
+}, {
+  versionKey: false
 });
 
 var IterationSchema = new Schema({
-  name: String,
+  name: {
+    type: String,
+    required: true
+  },
   todo: [IterationItemSchema],
   doing: [IterationItemSchema],
   done: [IterationItemSchema]
+}, {
+  versionKey: false
 });
 
 var ProjectSchema = new Schema({
@@ -35,14 +52,23 @@ var ProjectSchema = new Schema({
   },
   backlog: [IterationItemSchema],
   iterations: [IterationSchema]
+}, {
+  versionKey: false
 });
 
-var ProjectModel = mongoose.model('ProjectModel', ProjectSchema);
-var IterationModel = mongoose.model('IterationModel', IterationSchema);
-var IterationItemModel = mongoose.model('IterationItemModel', IterationItemSchema);
+var Project = mongoose.model('Project', ProjectSchema);
+var Iteration = mongoose.model('Iteration', IterationSchema);
+var IterationItem = mongoose.model('IterationItem', IterationItemSchema);
+
+var UserSchema = new Schema({
+  name: String,
+  sha256: String
+});
+
+var User = mongoose.model('User', UserSchema);
 
 module.exports = {
-  ProjectModel: ProjectModel,
-  IterationModel: IterationModel,
-  IterationItemModel: IterationItemModel
+  Project: Project,
+  Iteration: Iteration,
+  IterationItem: IterationItem,
 };

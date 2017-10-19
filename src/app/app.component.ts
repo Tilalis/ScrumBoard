@@ -15,7 +15,7 @@ import { ModalComponent } from './modal/modal.component';
 })
 export class AppComponent {
   title : string = 'ScrumBoard';
-  project_id: number = 0;
+  project_id: string = "";
   base64_iteration_name: string = '';
 
   constructor(public router: Router, private location: Location, private selectedService: SelectedService) {}
@@ -25,7 +25,7 @@ export class AppComponent {
   }
 
   onProjectChange(project: Project) {
-    this.project_id = project.id;
+    this.project_id = project._id;
   }
 
   onIterationChange(iteration: Iteration) {
