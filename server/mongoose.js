@@ -1,57 +1,48 @@
-var mongoose = ('mongoose');
+const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://root:scrumboardroot@ds111754.mlab.com:11754/scrumboard');
-var db = mongoose.connection;
+const logger = require('./logger');
 
-db.on('error', function (err) {
-    console.log.error('connection error:', err.message);
-});
-db.once('open', function callback () {
-    console.log.info("Connected to DB!");
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://root:scrumboardroot@ds111754.mlab.com:11754/scrumboard', {
+  useMongoClient: true
+})
+.then(function (db) {
+  logger.log("MONGOOSE", "localhost", "Connected!");
+})
+.catch(function (db) {
+  logger.error("MONGOOSE", "localhost", "Connection error.")
 });
 
 var Schema = mongoose.Schema;
 
-var Project = new Schema({
-  id: {
-    type: Number,
-    required: true
-  },
+var IterationItemSchema = new Schema({
+  name: String,
+  description: String,
+  storyPoints: Number
+});
+
+var IterationSchema = new Schema({
+  name: String,
+  todo: [IterationItemSchema],
+  doing: [IterationItemSchema],
+  done: [IterationItemSchema]
+});
+
+var ProjectSchema = new Schema({
   name: {
     type: String,
     required: true
   },
-  backlog: {
-    type: [{
-      name: String,
-      description: String,
-      storyPoints: Number
-    }],
-    required: true
-  },
-  iterations: {
-    type: [{
-      name: String,
-      todo: [{
-        name: String,
-        description: String,
-        storyPoints: Number
-      }],
-      doing: [{
-        name: String,
-        description: String,
-        storyPoints: Number
-      }],
-      done: [{
-        name: String,
-        description: String,
-        storyPoints: Number
-      }]
-    }],
-    required: true
-  }
+  backlog: [IterationItemSchema],
+  iterations: [IterationSchema]
 });
 
-var ProjectModel = mongoose.model('ProjectModel', ProjectModel);
+var ProjectModel = mongoose.model('ProjectModel', ProjectSchema);
+var IterationModel = mongoose.model('IterationModel', IterationSchema);
+var IterationItemModel = mongoose.model('IterationItemModel', IterationItemSchema);
 
-module.exports.ProjectModel = ProjectModel;
+module.exports = {
+  ProjectModel: ProjectModel,
+  IterationModel: IterationModel,
+  IterationItemModel: IterationItemModel
+};
