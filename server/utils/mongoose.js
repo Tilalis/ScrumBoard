@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const crypto   = require('crypto');
 const logging = require('./logging');
 const logger  = new logging.Logger("mongoose");
 
@@ -61,9 +61,25 @@ var Iteration = mongoose.model('Iteration', IterationSchema);
 var IterationItem = mongoose.model('IterationItem', IterationItemSchema);
 
 var UserSchema = new Schema({
-  name: String,
-  sha256: String
+  name: {
+    type: String,
+    unique: true,
+    required: true,
+    dropDups: true
+  },
+  hash: {
+    type: String,
+    required: true
+  }
 });
+
+UserSchema.methods.encrypt = function (password) {
+  return crypto.createHash('md5').update(password).digest("hex");
+};
+
+UserSchema.methods.check = function (password) {
+  return this.encrypt(password) == this.hash;
+};
 
 var User = mongoose.model('User', UserSchema);
 
@@ -71,4 +87,5 @@ module.exports = {
   Project: Project,
   Iteration: Iteration,
   IterationItem: IterationItem,
+  User: User
 };
