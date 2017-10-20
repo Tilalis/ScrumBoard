@@ -27,24 +27,6 @@ app.get('/', (req, res) => {
 app.use('/api/projects', projects.router);
 app.use('/api/users', users.router);
 
-app.get('/login', (req, res) => {
-  if (!req.query.username || !req.query.password) {
-      res.send('login failed');
-  } else if(req.query.username === "amy" || req.query.password === "amyspassword") {
-    req.session.logined = true;
-    res.send("login success!");
-  }
-});
-
-app.get('/logout', (req, res) => {
-  req.session.destroy();
-  res.send("Eh.");
-});
-
-app.get('/eh', users.auth, (req, res) => {
-  res.send("HEEEEEEEY!");
-});
-
 let port = parseInt(process.argv[2]);
 if (isNaN(port)) {
   port = 80;
