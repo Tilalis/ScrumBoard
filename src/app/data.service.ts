@@ -13,24 +13,21 @@ import { IterationItem } from './iteration-item';
 export class DataService {
   projects: Project[] = [];
 
-  private lsNameProjects: string = '_ng_ds_projects';
-  private url: string = "http://localhost:1337/api/projects";
+  private url: string = "http://tlls.ddns.net:1337/api/projects";
 
   constructor(
     private selectedService: SelectedService,
     private http: Http
   ) {
-    let localProjects = localStorage.getItem(this.lsNameProjects);
-    if (localProjects !== null) {
-      this.projects = JSON.parse(localProjects) as Project[];
-    }
   }
 
   getProjects() : Promise<Project[]> {
     let self = this;
     return this
             .http
-            .get(this.url)
+            .get(this.url,{
+               withCredentials: true
+            })
             .toPromise()
             .then(resp => {
               self.projects.splice(0, self.projects.length);
@@ -41,7 +38,9 @@ export class DataService {
   }
 
   addProject(project: Project) : void {
-    this.http.post(this.url, project)
+    this.http.post(this.url, project,{
+       withCredentials: true
+    })
     .toPromise()
     .then(raw => {
       let res = raw.json();
@@ -62,11 +61,12 @@ export class DataService {
     }
 
     let self = this;
-    this.http.delete(this.url + "/" + project._id)
+    this.http.delete(this.url + "/" + project._id,{
+       withCredentials: true
+    })
     .toPromise()
     .then(raw => {
       let res = raw.json();
-      console.log(res);
       if (res.status == "OK") {
         self.projects.splice(self.projects.indexOf(project), 1);
       }
@@ -76,12 +76,12 @@ export class DataService {
   }
 
   updateProject(project: Project) {
-    console.log("CALLED updateProject");
-    this.http.put(this.url + "/" + project._id, project)
+    this.http.put(this.url + "/" + project._id, project,{
+       withCredentials: true
+    })
     .toPromise()
     .then((raw) => {
       let res = raw.json();
-      console.log(res);
       if (res.status == "OK") {
         project._id = res.project._id;
       }
@@ -184,7 +184,4 @@ export class DataService {
     return this.selectedService.project.backlog.indexOf(iterationItem) !== -1;
   }
 
-  private save() : void {
-    localStorage.setItem(this.lsNameProjects, JSON.stringify(this.projects));
-  }
 }
