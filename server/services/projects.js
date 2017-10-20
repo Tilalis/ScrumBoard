@@ -7,11 +7,41 @@ const Logger = require('../utils/logging').Logger;
 const logger = new Logger("server");
 logger.setLevel(Logger.LOG);
 
+const passport     = require('passport');
+const passportHttp = require('passport-http');
+
 const status = {
   ERROR: "ERROR",
   OK: "OK",
   NOTFOUND: "NOT FOUND"
 }
+
+passport.use(new passportHttp.BasicStrategy((name, password, done) => {
+  mongoose.User.findOne({name: name}, (err, user) => {
+    if (!err) {
+      if (!user) {
+        logger.log("PASSPORT", "projects", "User not found at login.");
+        done(null, false);
+      } else {
+        if (user.check(password)) {
+          logger.log("PASSPORT", "projects", "User logined.");
+          done(null, user);
+        } else {
+          logger.log("PASSPORT", "projects", "Bad login.");
+          done(null, false);
+        }
+      }
+    } else {
+      logger.error("PASSPORT", "projects", err.message);
+      done(err);
+    }
+  })
+}));
+
+const auth = passport.authenticate('basic', { session: false });
+router.get('/check', auth, (req, res) => {
+  res.send({status: status.OK});
+});
 
 router.get('/', (req, res) => {
   return mongoose.Project.find((err, projects) => {
@@ -45,7 +75,7 @@ router.get('/:id', (req, res) => {
   })
 });
 
-router.post('/', users.auth, (req, res) => {
+router.post('/', auth, (req, res) => {
   logger.info(req.method, req.path, JSON.stringify(req.body));
   delete req.body._id;
   var project = new mongoose.Project(req.body);
@@ -62,7 +92,7 @@ router.post('/', users.auth, (req, res) => {
   })
 });
 
-router.put('/:id', users.auth, (req, res) => {
+router.put('/:id', auth, (req, res) => {
   return mongoose.Project.findById(req.params.id, (err, project) => {
     if (!err) {
       if (!project) {
@@ -91,7 +121,7 @@ router.put('/:id', users.auth, (req, res) => {
   });
 });
 
-router.delete('/:id', users.auth, (req, res) => {
+router.delete('/:id', auth, (req, res) => {
   return mongoose.Project.findById(req.params.id, (err, project) => {
     if (!err) {
       if (!project) {

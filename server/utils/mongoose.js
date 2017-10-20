@@ -8,10 +8,10 @@ mongoose.connect('mongodb://root:scrumboardroot@ds111754.mlab.com:11754/scrumboa
   useMongoClient: true
 })
 .then(function (db) {
-  logger.log("MONGOOSE", "localhost", "Connected.");
+  logger.log("MONGOOSE", "utils", "Connected.");
 })
 .catch(function (db) {
-  logger.error("MONGOOSE", "localhost", "Connection error.")
+  logger.error("MONGOOSE", "utils", "Connection error.")
 });
 
 var Schema = mongoose.Schema;
