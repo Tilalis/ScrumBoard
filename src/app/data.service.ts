@@ -4,6 +4,7 @@ import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import { SelectedService } from './selected.service';
+import { UserService } from './user.service';
 
 import { Project } from './project';
 import { Iteration } from './iteration';
@@ -12,13 +13,36 @@ import { IterationItem } from './iteration-item';
 @Injectable()
 export class DataService {
   projects: Project[] = [];
+  headers: Headers;
 
   private url: string = "http://tlls.ddns.net:1337/api/projects";
 
   constructor(
     private selectedService: SelectedService,
+    private userService: UserService,
     private http: Http
   ) {
+    this.headers = new Headers();
+    this.headers.append("Content-Type", "application/json");
+  }
+
+  authorize() {
+    this.headers.delete("Authorization");
+    this.headers.append("Authorization", this.userService.authorize());
+    console.log(this.userService.authorize());
+  }
+
+  check() : Promise<boolean> {
+    let checkUrl: string = "http://tlls.ddns.net:1337/api/projects/check";
+    return this.http.get(checkUrl, {
+      headers: this.headers
+    })
+    .toPromise().then((raw) => {
+      let res = raw.json();
+      this.userService.setLogined(res.status == "OK");
+      console.log(raw);
+      return this.userService.isLogined();
+    })
   }
 
   getProjects() : Promise<Project[]> {
@@ -26,7 +50,7 @@ export class DataService {
     return this
             .http
             .get(this.url,{
-               withCredentials: true
+               headers: this.headers
             })
             .toPromise()
             .then(resp => {
@@ -34,12 +58,12 @@ export class DataService {
               let projects = resp.json() as Project[];
               self.projects.push(...projects);
               return self.projects;
-            });
+            })
   }
 
   addProject(project: Project) : void {
     this.http.post(this.url, project,{
-       withCredentials: true
+       headers: this.headers
     })
     .toPromise()
     .then(raw => {
@@ -62,7 +86,7 @@ export class DataService {
 
     let self = this;
     this.http.delete(this.url + "/" + project._id,{
-       withCredentials: true
+       headers: this.headers
     })
     .toPromise()
     .then(raw => {
@@ -77,7 +101,7 @@ export class DataService {
 
   updateProject(project: Project) {
     this.http.put(this.url + "/" + project._id, project,{
-       withCredentials: true
+       headers: this.headers
     })
     .toPromise()
     .then((raw) => {

@@ -29,6 +29,7 @@ export class BoardCardComponent implements OnInit {
   }
 
   edit() {
+    this.itemAdd.setIterationItem(this.iterationItem);
     this.editModal.show();
   }
 

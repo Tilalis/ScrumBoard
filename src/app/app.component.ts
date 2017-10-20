@@ -46,11 +46,7 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-    this.userService.logout().then((logined) => {
-      if (!logined) {
-        location.reload();
-      }
-    });
+    this.userService.logout();
   }
 
   ngOnInit() {

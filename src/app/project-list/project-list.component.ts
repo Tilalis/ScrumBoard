@@ -28,6 +28,8 @@ export class ProjectListComponent implements OnInit {
       this.projects = projects;
       this.selectedProject = this.projects[0];
       this.selectedService.project = this.selectedProject;
+    }).catch(err => {
+      
     });
   }
 
