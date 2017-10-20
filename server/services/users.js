@@ -16,13 +16,15 @@ const status = {
 const _session = session({
   secret: "dQWESDjasdlk213",
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: { maxAge: 2147483647 }
 });
 
 const auth = (req, res, next) => {
   if (req.session && req.session.logined) {
     return next();
   } else {
+    logger.log(req.method, req.path, JSON.stringify(req.session.logined));
     logger.log(req.method, req.path, "Unauthorized access.");
     res.statusCode = 401;
     return res.send({status: status.UNAUTHORIZED});
